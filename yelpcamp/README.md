@@ -45,6 +45,16 @@ npm start
 
 The app runs on `http://localhost:3000` by default.
 
+## Deployment
+
+The repo includes a root-level `render.yaml` for Render deployment. Add these environment variables in Render:
+
+- `DB_URL`
+- `SESSION_SECRET`
+- `NODE_ENV=production`
+
+See `DEPLOYMENT.md` for details.
+
 ## Project Structure
 
 ```text

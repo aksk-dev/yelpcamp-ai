@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: yelpcamp-ai
+    runtime: node
+    rootDir: yelpcamp
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DB_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true
