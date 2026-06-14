@@ -1,0 +1,27 @@
+{
+  "name": "yelpcamp",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "seed": "node seeds/index.js",
+    "test": "node --check app.js && node --check routes/campgrounds.js && node --check routes/reviews.js && node --check models/campground.js && node --check models/reviews.js && node --check services/sentiment.js && node --check services/recommendations.js && node --check services/campgroundInsights.js && node --check schemas.js && node --check seeds/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Campground listing and review app built with Express, EJS, MongoDB, and Mongoose.",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "connect-flash": "^0.1.1",
+    "ejs": "^3.1.10",
+    "ejs-mate": "^4.0.0",
+    "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "joi": "^18.0.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.18.1"
+  }
+}

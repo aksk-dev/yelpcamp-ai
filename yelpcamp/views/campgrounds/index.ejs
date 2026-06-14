@@ -1,0 +1,69 @@
+<% layout('layouts/boilerplate')%>
+
+<h1>All Campgrounds</h1>
+<div>
+    <a href="/campgrounds/new">Add Campground</a>
+</div>
+
+<form class="row g-2 my-4" action="/campgrounds" method="GET">
+    <div class="col-md-3">
+        <input class="form-control" type="search" name="q" placeholder="Search title, place, tags"
+            value="<%= filters.q || '' %>">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" type="number" name="minPrice" placeholder="Min price"
+            value="<%= filters.minPrice || '' %>">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" type="number" name="maxPrice" placeholder="Max price"
+            value="<%= filters.maxPrice || '' %>">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" type="number" step="any" name="lat" placeholder="Latitude"
+            value="<%= filters.lat || '' %>">
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" type="number" step="any" name="lng" placeholder="Longitude"
+            value="<%= filters.lng || '' %>">
+    </div>
+    <div class="col-md-1">
+        <button class="btn btn-primary w-100">Search</button>
+    </div>
+    <div class="col-md-2">
+        <input class="form-control" type="number" name="distance" placeholder="Km"
+            value="<%= filters.distance || '' %>">
+    </div>
+</form>
+
+<% if (!campgrounds.length) { %>
+<p class="text-muted">No campgrounds match these filters.</p>
+<% } %>
+
+<% for (let campground of campgrounds){%>
+<div class="card mb-3">
+    <div class="row">
+        <div class="col-md-4">
+            <img class="img-fluid" alt="" src="<%=campground.image%>">
+        </div>
+        <div class="col-md-8">
+            <div class="card-body">
+                <h5 class="card-title"><%= campground.title %> </h5>
+                <p class="card-text"><%= campground.description %></p>
+                <p class="card-text">
+                    <small class="text-muted"><%= campground.location%></small>
+                </p>
+                <p class="card-text mb-2">
+                    <span class="badge bg-success">Rating <%= campground.averageRating || 'New' %></span>
+                    <span class="badge bg-info text-dark">Sentiment <%= campground.sentimentLabel || 'neutral' %></span>
+                    <% if (campground.tags && campground.tags.length) { %>
+                    <% for (let tag of campground.tags) { %>
+                    <span class="badge bg-secondary"><%= tag %></span>
+                    <% } %>
+                    <% } %>
+                </p>
+                <a class="btn btn-primary" href="/campgrounds/<%=campground._id%>">View <%=campground.title%></a>
+            </div>
+        </div>
+    </div>
+</div>
+<% }%>

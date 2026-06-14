@@ -1,0 +1,86 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <img src="<%= campground.image%>" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title"><%= campground.title%></h5>
+                <p class="card-text"><%= campground.description%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted"><%= campground.location%></li>
+                <li class="list-group-item">$<%= campground.price%>/night</li>
+                <li class="list-group-item">
+                    Average rating: <%= campground.averageRating || 'No ratings yet' %>
+                </li>
+                <li class="list-group-item">
+                    Review sentiment:
+                    <span class="badge bg-info text-dark"><%= campground.sentimentLabel || 'neutral' %></span>
+                    <small class="text-muted">score <%= campground.sentimentScore || 0 %></small>
+                </li>
+                <% if (campground.tags && campground.tags.length) { %>
+                <li class="list-group-item">
+                    <% for (let tag of campground.tags) { %>
+                    <span class="badge bg-secondary"><%= tag %></span>
+                    <% } %>
+                </li>
+                <% } %>
+                <% if (campground.geometry && campground.geometry.coordinates && campground.geometry.coordinates.length === 2) { %>
+                <li class="list-group-item text-muted">
+                    Coordinates: <%= campground.geometry.coordinates[1] %>, <%= campground.geometry.coordinates[0] %>
+                </li>
+                <% } %>
+            </ul>
+            <div class="card-body">
+                <a class="card-link btn btn-info" href="/campgrounds/<%=campground._id%>/edit">Edit</a>
+                <form class="d-inline" action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+                    <button class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+            <div class="card-footer text-muted">
+                2 days ago
+            </div>
+        </div>
+        <h2>leave a review</h2>
+        <form action="/campgrounds/<%= campground._id %>/reviews" class="mb-3 validated-form" method="POST" novalidate>
+            <div class="mb-3">
+                <label class="form-label" for="rating">Rating</label>
+                <input type="range" class="form-range" name="review[rating]" id="rating" min="1" max="5">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="body">Review</label>
+                <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3" required></textarea>
+            </div>
+            <button class="btn btn-success">Submit</button>
+        </form>
+        <% for (let review of campground.reviews) { %>
+        <div class="card mb-3">
+        <div class="card-body">
+            <h5 class="card-title">Rating: <%= review.rating %></h5>
+            <p>
+                <span class="badge bg-light text-dark">AI sentiment: <%= review.sentiment ? review.sentiment.label : 'neutral' %></span>
+                <small class="text-muted">confidence <%= review.sentiment ? review.sentiment.confidence : 0 %></small>
+            </p>
+            <p class="card-text">Review: <%= review.body %></p>
+            <form action="/campgrounds/<%= campground._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-danger">Delete Review</button>
+            </form>
+        </div>
+         </div>
+        <% } %>
+        <% if (recommendations.length) { %>
+        <h2 class="mt-4">Recommended Campgrounds</h2>
+        <% for (let item of recommendations) { %>
+        <div class="card mb-2">
+            <div class="card-body">
+                <h5 class="card-title"><%= item.campground.title %></h5>
+                <p class="card-text mb-1"><%= item.campground.location %></p>
+                <small class="text-muted">Match score: <%= item.score %></small>
+                <a class="btn btn-sm btn-outline-primary float-right" href="/campgrounds/<%= item.campground._id %>">View</a>
+            </div>
+        </div>
+        <% } %>
+        <% } %>
+    </div>
+</div>
